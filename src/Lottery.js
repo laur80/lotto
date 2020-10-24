@@ -1,41 +1,41 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import Ball from "./Ball";
 import "./Lottery.css";
 
-class Lottery extends Component {
-  static defaultProps = {
+function Lottery () {
+
+ const helpers= {
     title: "Lotto",
     numBalls: 6,
     maxNum: 40
   };
-  constructor(props) {
-    super(props);
-    this.state = { nums: Array.from({ length: this.props.numBalls }) };
-    this.handleClick = this.handleClick.bind(this);
-  }
-  generate() {
-    this.setState(curState => ({
+  
+    const[state,setState]=useState({ nums: Array.from({ length: helpers.numBalls }) });
+ 
+ function generate() {
+    setState(curState => ({
       nums: curState.nums.map(
-        n => Math.floor(Math.random() * this.props.maxNum) + 1
+        n => Math.floor(Math.random() * helpers.maxNum) + 1
       )
     }));
   }
-  handleClick() {
-    this.generate();
+
+  function handleClick() {
+    generate();
   }
-  render() {
+ 
     return (
       <section className='Lottery'>
-        <h1>{this.props.title}</h1>
+        <h1>{helpers.title}</h1>
         <div>
-          {this.state.nums.map(n => (
-            <Ball num={n} />
+          {state.nums.map((n,i) => (
+            <Ball key={i} num={n} />
           ))}
         </div>
-        <button onClick={this.handleClick}>Generate</button>
+        <button onClick={handleClick}>Generate</button>
       </section>
     );
-  }
+
 }
 
 export default Lottery;
